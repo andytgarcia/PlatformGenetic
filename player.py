@@ -13,9 +13,20 @@ class Player:
         self.currentJumpVel = 40
         self.maxJumpVel = 40
         self.speed = 10
+        self.score = 0
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
+
+    def jump(self):
+        self.isJumping = True
+
+    def moveLeft(self):
+        self.x += self.speed
+
+    def moveRight(self):
+        self.x -= self.speed
+
 
     def handle_key_presses(self):
         if pygame.key.get_pressed()[pygame.K_SPACE] and not self.isJumping:
@@ -49,6 +60,10 @@ class Player:
         for c in coins:
             if myHitBox.colliderect(c.getCollisionRect()):
                 coins.remove(c)
+                self.score += 1
+
+    def getScore(self):
+        return self.score
 
     def handleJump(self):
         if self.isJumping:

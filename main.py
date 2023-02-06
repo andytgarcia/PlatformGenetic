@@ -1,7 +1,9 @@
 import random
+import time
+
 import pygame
 from player import *
-
+from playerAI import *
 
 #start the pygame engine
 pygame.init()
@@ -15,7 +17,7 @@ pygame.mixer.init();
 
 #game variables
 simOver = False
-p1 = Player()
+p1 = PlayerAI()
 map1 = Map()
 camera_offset = (0,0)
 
@@ -42,6 +44,8 @@ def create_map_1():
 def draw_mouse_coords():
     textSurface = myfont.render(str(pygame.mouse.get_pos()), True, (255,255,255))
     world.blit(textSurface, (50, 30))
+    textSurface = myfont.render(str(p1.getScore()), True, (255, 255, 255))
+    world.blit(textSurface, (50,50 ))
 
 def clear_screen():
     pygame.draw.rect(world, (0,0,0), (0, 0, world.get_rect().width, world.get_rect().height))
@@ -80,4 +84,5 @@ while not simOver:
     #should be the LAST LINE of game code
     screen.blit(world,camera_offset)
     pygame.display.flip()
+
     fpsClock.tick(FPS) #slow the loop down to 60 loops per second
