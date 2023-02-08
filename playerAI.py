@@ -8,12 +8,17 @@ from player import *
 
 class PlayerAI:
     def __init__(self):
-        self.player = Player()
+        self.player = Player((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         self.dna = []
+        self.alleleCount = 500
         self.createDNASequence()
         self.currentAllele = 0
-        self.delay = 100000000000
+        self.delay = 100_000_000_000
         self.nextAct = time.time_ns() + self.delay
+        self.vx = 0
+        self.forceX = 5
+        self.worldForce = .5
+        self.distance = 0
 
     def createDNASequence(self):
         # 0 - junk DNA - 80%
@@ -21,7 +26,7 @@ class PlayerAI:
         # 2 - move left - 7 &
         # 3 - move right - 7%
 
-        for i in range(100):
+        for i in range(self.alleleCount):
             choice = random.randint(1, 100)
             if choice <= 80:
                 self.dna.append(0)
@@ -32,18 +37,41 @@ class PlayerAI:
             elif choice <= 100:
                 self.dna.append(3)
 
+    def isDone(self):
+
+        return self.currentAllele == self.alleleCount
+
+
+    def getCurrentAllele(self):
+        return self.currentAllele
+
+
+    def reset(self):
+        self.currentAllele = 0
+        self.player.setX(400)
+        self.player.setY(400)
+
     def act(self):
-        if self.nextAct < time.time_ns():
+        if self.nextAct < time.time_ns() and self.currentAllele < self.alleleCount:
             if self.dna[self.currentAllele] == 1:
                 self.player.jump()
             elif self.dna[self.currentAllele] == 2:
-                self.player.moveLeft()
+                self.vx -= self.forceX
             elif self.dna[self.currentAllele] == 3:
-                self.player.moveRight()
+                self.vx += self.forceX
+
+            # add x velocity to x position
+            self.player.setX(self.player.getX() + self.vx)
+            if self.vx < 0:
+                self.vx += self.worldForce
+            elif self.vx > 0:
+                self.vx -= self.worldForce
+
             self.nextAct = time.time_ns() + self.delay
             self.currentAllele += 1
             print(str(self.currentAllele))
 
+        self.distance = self.player.getX()
         return self.player.act()
 
     def draw(self, screen):

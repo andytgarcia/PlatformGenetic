@@ -1,14 +1,16 @@
 import pygame
 
+
 class Player:
 
     # empty constructor
-    def __init__(self):
+    def __init__(self, color=(255, 0, 0)):
+        self.map = map
         self.x = 400
         self.y = 400
         self.width = 30
         self.height = 30
-        self.color = (255,0,0)
+        self.color = color
         self.isJumping = False
         self.currentJumpVel = 40
         self.maxJumpVel = 40
@@ -27,6 +29,14 @@ class Player:
     def moveRight(self):
         self.x -= self.speed
 
+    def setX(self, selfx):
+        self.x = selfx
+
+    def getX(self):
+        return self.x
+
+    def setY(self, y):
+        self.y = y
 
     def handle_key_presses(self):
         if pygame.key.get_pressed()[pygame.K_SPACE] and not self.isJumping:
@@ -40,7 +50,6 @@ class Player:
         oldx = self.x
         oldy = self.y
 
-        self.handle_key_presses()
         self.handleJump()
         self.y -= self.map.get_gravity()
         if self.is_map_bottom_collision():
@@ -73,9 +82,8 @@ class Player:
             if self.currentJumpVel < -self.maxJumpVel:
                 self.currentJumpVel = -self.maxJumpVel
 
-
-    def setMap(self, map):
-        self.map = map
+    def setMap(self, map1):
+        self.map = map1
 
     def is_map_collision(self):
         myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -92,7 +100,7 @@ class Player:
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
-                if myBottomY > box.y: # I am hitting and BELOW this platform
+                if myBottomY > box.y:  # I am hitting and BELOW this platform
                     return True;
 
         return False
@@ -103,7 +111,7 @@ class Player:
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
-                if myRightX > box.x: # I am hitting and to the RIGHT this platform
+                if myRightX > box.x:  # I am hitting and to the RIGHT this platform
                     return True;
 
         return False
@@ -118,12 +126,13 @@ class Platform:
         self.height = height
         self.color = color
 
-    #used for drawing and used for collision detection
+    # used for drawing and used for collision detection
     def getRect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.getRect());
+
 
 class Map:
 
@@ -151,7 +160,6 @@ class Map:
 
         return hitBoxes
 
-
     def getCoins(self):
         return self.coins
 
@@ -163,8 +171,6 @@ class Map:
             c.draw(screen)
 
 
-
-
 class Coin:
     def __init__(self, x, y):
         self.x = x
@@ -172,10 +178,8 @@ class Coin:
         self.size = 30
         self.color = (255, 255, 0)
 
-
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
     def getCollisionRect(self):
         return pygame.Rect(self.x, self.y, self.size, self.size)
-
