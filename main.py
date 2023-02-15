@@ -5,6 +5,8 @@ import pygame
 from player import *
 from playerAI import *
 
+
+WHITE = (255, 255, 255)
 # start the pygame engine
 pygame.init()
 
@@ -32,7 +34,7 @@ world = pygame.Surface((3000, 3000))
 
 
 def createAIPlayers():
-    for i in range(50):
+    for i in range(500):
         aiPlayers.append(PlayerAI())
 
 
@@ -45,6 +47,7 @@ def create_map_1():
     map1.add(Platform(600, 200, 30, 400, (0, 255, 0)))
     map1.add(Platform(715, 120, 300, 30, (0, 255, 0)))
     map1.add(Platform(740, 700, 300, 30, (0, 255, 0)))
+    map1.add(Platform(0, 0, 30, 720, (0, 255, 0)))
     map1.addCoin(Coin(600, 650))
     map1.addCoin(Coin(220, 450))
     map1.addCoin(Coin(730, 90))
@@ -52,8 +55,15 @@ def create_map_1():
 
 
 def draw_mouse_coords():
-    textSurface = myfont.render(str(pygame.mouse.get_pos()), True, (255, 255, 255))
+    textSurface = myfont.render(str(pygame.mouse.get_pos()), True, WHITE)
     world.blit(textSurface, (50, 30))
+    if len(aiPlayers) > 1:
+        textSurface = myfont.render((str(aiPlayers[0].currentAllele)), True, WHITE)
+        world.blit(textSurface, (50, 60))
+    textSurface = myfont.render(str(aiPlayers.__len__()), True, WHITE)
+    world.blit(textSurface, (50, 90))
+
+
 
 
 def clear_screen():
@@ -82,7 +92,15 @@ def sortAIByScore():
 # no worky
 def killBottomHalf():
     global aiPlayers
-    aiPlayers = aiPlayers[0:int(len(aiPlayers) / 2)]
+    aiPlayers = aiPlayers[:int(len(aiPlayers) / 2)]
+    print(len(aiPlayers))
+
+def mateParents():
+    for a in aiPlayers:
+        parent1 = aiPlayers[a]
+        parent2 = aiPlayers[a + 1]
+
+
 
 
 # initialize all data before gameplay
@@ -103,21 +121,23 @@ while not simOver:
     # draw code
     clear_screen()
     map1.draw(world)
-    for p in aiPlayers:
-        p.draw(world)
+
+    for a in aiPlayers:
+        a.draw(world)
     draw_mouse_coords()
 
     # player update code
     updateCamera()
 
-    if aiPlayers[0].isDone():
+    if len(aiPlayers) > 1 and aiPlayers[0].isDone():
+        killBottomHalf()
         for a in aiPlayers:
             sortAIByScore()
-            killBottomHalf()
             a.reset()
 
-    for p in aiPlayers:
-        p.act()
+    for a in aiPlayers:
+        a.act()
+
     x_offset = 0
     y_offset = 0
     if cameraPos[0] > 640:
@@ -126,6 +146,8 @@ while not simOver:
         y_offset = 350 - cameraPos[1]
     camera_offset = (x_offset, y_offset)
     # camera_pos = ((player_pos[0], player_pos[1] - 900))
+
+
 
     # put all the graphics on the screen
     # should be the LAST LINE of game code

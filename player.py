@@ -5,13 +5,13 @@ class Player:
 
     # empty constructor
     def __init__(self, color=(255, 0, 0)):
-        self.map = map
         self.x = 400
-        self.y = 400
+        self.y = 150
         self.width = 30
         self.height = 30
         self.color = color
         self.isJumping = False
+        self.isMovingRight = False
         self.currentJumpVel = 40
         self.maxJumpVel = 40
         self.speed = 10
@@ -21,16 +21,23 @@ class Player:
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
     def jump(self):
-        self.isJumping = True
+        if not self.isJumping:
+            self.isJumping = True
 
     def moveLeft(self):
         self.x += self.speed
+        self.isMovingRight = False
 
     def moveRight(self):
-        self.x -= self.speed
+        if self.is_map_right_collision() and self.isMovingRight:
+            self.x -= 0
+        else:
+            self.x -= self.speed
+        self.isMovingRight = True
 
-    def setX(self, selfx):
-        self.x = selfx
+
+    def setX(self, x):
+        self.x = x
 
     def getX(self):
         return self.x
@@ -50,18 +57,20 @@ class Player:
         oldx = self.x
         oldy = self.y
 
+        self.handle_key_presses()
         self.handleJump()
         self.y -= self.map.get_gravity()
         if self.is_map_bottom_collision():
             self.y = oldy
             self.isJumping = False
             self.currentJumpVel = self.maxJumpVel
-        if self.is_map_right_collision():
-            self.x = oldx
+        if self.is_map_right_collision() and not self.isMovingRight:
+            self.x = oldx - 10
+
 
         self.checkCoinCollision()
 
-        return (self.x, self.y)
+        return self.x, self.y
 
     def checkCoinCollision(self):
         coins = self.map.getCoins()
@@ -82,14 +91,15 @@ class Player:
             if self.currentJumpVel < -self.maxJumpVel:
                 self.currentJumpVel = -self.maxJumpVel
 
-    def setMap(self, map1):
-        self.map = map1
+    def setMap(self, map):
+        self.map = map
 
     def is_map_collision(self):
         myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
+                print("collision")
                 return True
 
         return False
@@ -111,11 +121,19 @@ class Player:
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
-                if myRightX > box.x:  # I am hitting and to the RIGHT this platform
+                if myRightX > box.x:    # I am hitting and to the RIGHT this platform
                     return True;
 
         return False
 
+    def isMapLeftCollison(self):
+        myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
+        myLeftX = myHitBox.x
+        mapHitBoxes = self.map.get_hit_box_list()
+        for box in mapHitBoxes:
+            if myHitBox.colliderect(box):
+                if myLeftX < (box.x + box.width):
+                    return True
 
 class Platform:
 

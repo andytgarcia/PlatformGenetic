@@ -13,7 +13,7 @@ class PlayerAI:
         self.alleleCount = 500
         self.createDNASequence()
         self.currentAllele = 0
-        self.delay = 100_000_000_000
+        self.delay = 100_000_000
         self.nextAct = time.time_ns() + self.delay
         self.vx = 0
         self.forceX = 5
@@ -21,24 +21,23 @@ class PlayerAI:
         self.distance = 0
 
     def createDNASequence(self):
-        # 0 - junk DNA - 80%
-        # 1 - jump - 6%
-        # 2 - move left - 7 &
-        # 3 - move right - 7%
+        # 0 - junk DNA - 50%
+        # 1 - jump - 10%
+        # 2 - move left - 20 &
+        # 3 - move right - 20%
 
         for i in range(self.alleleCount):
             choice = random.randint(1, 100)
-            if choice <= 80:
+            if choice <= 50:
                 self.dna.append(0)
-            elif choice <= 86:
+            elif choice <= 60:
                 self.dna.append(1)
-            elif choice <= 93:
+            elif choice <= 80:
                 self.dna.append(2)
             elif choice <= 100:
                 self.dna.append(3)
 
     def isDone(self):
-
         return self.currentAllele == self.alleleCount
 
 
@@ -56,7 +55,10 @@ class PlayerAI:
             if self.dna[self.currentAllele] == 1:
                 self.player.jump()
             elif self.dna[self.currentAllele] == 2:
-                self.vx -= self.forceX
+                if self.player.is_map_right_collision() and self.player.isMovingRight:
+                    self.vx -= 0
+                else:
+                    self.vx -= self.forceX
             elif self.dna[self.currentAllele] == 3:
                 self.vx += self.forceX
 
@@ -68,8 +70,8 @@ class PlayerAI:
                 self.vx -= self.worldForce
 
             self.nextAct = time.time_ns() + self.delay
-            self.currentAllele += 1
-            print(str(self.currentAllele))
+            self.currentAllele = self.currentAllele + 1
+            #print(str(self.currentAllele))
 
         self.distance = self.player.getX()
         return self.player.act()
