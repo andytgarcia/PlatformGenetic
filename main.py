@@ -23,6 +23,7 @@ simOver = False
 map1 = Map()
 camera_offset = (0, 0)
 cameraPos = (500, 500)
+initialValue = 100
 
 aiPlayers = []
 
@@ -34,8 +35,16 @@ world = pygame.Surface((3000, 3000))
 
 
 def createAIPlayers():
-    for i in range(500):
+    for i in range(initialValue):
         aiPlayers.append(PlayerAI())
+
+
+def refillPopulation():
+    while len(aiPlayers) != initialValue:
+        aiPlayers.append(PlayerAI())
+    for a in aiPlayers:
+        a.setMap(map1)
+
 
 
 def create_map_1():
@@ -134,6 +143,7 @@ while not simOver:
         for a in aiPlayers:
             sortAIByScore()
             a.reset()
+        refillPopulation()
 
     for a in aiPlayers:
         a.act()

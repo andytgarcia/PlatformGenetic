@@ -65,7 +65,11 @@ class Player:
             self.isJumping = False
             self.currentJumpVel = self.maxJumpVel
         if self.is_map_right_collision() and not self.isMovingRight:
-            self.x = oldx - 10
+            self.x = oldx - self.speed*2
+        else:
+            self.isMovingRight = False
+        if self.isMapLeftCollison():
+            self.x = oldx + self.speed*2
 
 
         self.checkCoinCollision()
@@ -132,7 +136,7 @@ class Player:
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
-                if myLeftX < (box.x + box.width):
+                if myLeftX > box.x:
                     return True
 
 class Platform:
