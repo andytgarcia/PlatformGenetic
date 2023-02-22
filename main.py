@@ -112,6 +112,7 @@ def mateParents():
 
 
 
+
 # initialize all data before gameplay
 create_map_1()
 createAIPlayers()

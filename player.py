@@ -64,12 +64,10 @@ class Player:
             self.y = oldy
             self.isJumping = False
             self.currentJumpVel = self.maxJumpVel
-        if self.is_map_right_collision() and not self.isMovingRight:
-            self.x = oldx - self.speed*2
-        else:
-            self.isMovingRight = False
-        if self.isMapLeftCollison():
-            self.x = oldx + self.speed*2
+        if self.is_map_right_collision():
+            self.x = oldx - self.speed*4
+        if self.isMapLeftCollision():
+            self.x = oldx + self.speed*4
 
 
         self.checkCoinCollision()
@@ -125,19 +123,26 @@ class Player:
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
-                if myRightX > box.x:    # I am hitting and to the RIGHT this platform
-                    return True;
+                if myRightX >= box.x:    # I am hitting and to the RIGHT this platform
+                    return True
 
         return False
 
-    def isMapLeftCollison(self):
+    def isMapLeftCollision(self):
         myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
         myLeftX = myHitBox.x
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
-                if myLeftX > box.x:
+                if myLeftX <= box.x + box.width:
                     return True
+
+    def isMapCollision(self):
+        myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
+        mapHitBoxes = self.map.get_hit_box_list()
+        for box in mapHitBoxes:
+            if myHitBox.colliderect(box):
+                return True
 
 class Platform:
 

@@ -40,10 +40,8 @@ class PlayerAI:
     def isDone(self):
         return self.currentAllele == self.alleleCount
 
-
     def getCurrentAllele(self):
         return self.currentAllele
-
 
     def reset(self):
         self.currentAllele = 0
@@ -55,15 +53,17 @@ class PlayerAI:
             if self.dna[self.currentAllele] == 1:
                 self.player.jump()
             elif self.dna[self.currentAllele] == 2:
-                if self.player.is_map_right_collision() and self.player.isMovingRight:
-                    self.vx -= 0
-                else:
-                    self.vx -= self.forceX
+                self.vx -= self.forceX
             elif self.dna[self.currentAllele] == 3:
                 self.vx += self.forceX
 
             # add x velocity to x position
-            self.player.setX(self.player.getX() + self.vx)
+            if self.player.is_map_right_collision() and self.vx > 0:
+                self.player.setX(self.player.getX())
+            elif self.player.isMapLeftCollision() and self.vx < 0:
+                self.player.setX(self.player.getX())
+            else:
+                self.player.setX(self.player.getX() + self.vx)
             if self.vx < 0:
                 self.vx += self.worldForce
             elif self.vx > 0:
@@ -71,7 +71,7 @@ class PlayerAI:
 
             self.nextAct = time.time_ns() + self.delay
             self.currentAllele = self.currentAllele + 1
-            #print(str(self.currentAllele))
+            # print(str(self.currentAllele))
 
         self.distance = self.player.getX()
         return self.player.act()
