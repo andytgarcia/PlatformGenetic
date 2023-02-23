@@ -71,6 +71,8 @@ def draw_mouse_coords():
         world.blit(textSurface, (50, 60))
     textSurface = myfont.render(str(aiPlayers.__len__()), True, WHITE)
     world.blit(textSurface, (50, 90))
+    textSurface = myfont.render("Generation: " + str(genCounter), True, WHITE)
+    world.blit(textSurface, (50, 120))
 
 
 
@@ -102,16 +104,31 @@ def sortAIByScore():
 def killBottomHalf():
     global aiPlayers
     aiPlayers = aiPlayers[:int(len(aiPlayers) / 2)]
-    print(len(aiPlayers))
 
-def mateParents():
+
+def mateParents(remaining):
+    for a in range(len(remaining)):
+        parent1 = remaining[a]
+        parent2 = remaining[a + 1]
+        child = PlayerAI()
+        newDna = child.dna
+        p1DNA = parent1.getDNASequence()
+        for i in p1DNA:
+            randNum = random.randint(1, 2)
+            if randNum == 1:
+                newDna.append(parent1.getDNAValue(i))
+            else:
+                newDna.append(parent2.getDNAValue(i))
+
+        aiPlayers.append(child)
+        a += 1
+
+def setMap():
     for a in aiPlayers:
-        parent1 = aiPlayers[a]
-        parent2 = aiPlayers[a + 1]
+        a.setMap(map1)
 
 
-
-
+genCounter = 1
 
 # initialize all data before gameplay
 create_map_1()
@@ -144,7 +161,9 @@ while not simOver:
         for a in aiPlayers:
             sortAIByScore()
             a.reset()
-        refillPopulation()
+        mateParents(aiPlayers)
+        setMap()
+        genCounter += 1
 
     for a in aiPlayers:
         a.act()

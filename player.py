@@ -79,8 +79,10 @@ class Player:
         myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
         for c in coins:
             if myHitBox.colliderect(c.getCollisionRect()):
-                coins.remove(c)
-                self.score += 1
+                #coins.remove(c)
+                if c.color != self.color:
+                    self.score += 1
+                    c.color = self.color
 
     def getScore(self):
         return self.score

@@ -10,7 +10,7 @@ class PlayerAI:
     def __init__(self):
         self.player = Player((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         self.dna = []
-        self.alleleCount = 500
+        self.alleleCount = 100
         self.createDNASequence()
         self.currentAllele = 0
         self.delay = 100_000_000
@@ -19,6 +19,9 @@ class PlayerAI:
         self.forceX = 5
         self.worldForce = .5
         self.distance = 0
+
+
+
 
     def createDNASequence(self):
         # 0 - junk DNA - 50%
@@ -84,3 +87,12 @@ class PlayerAI:
 
     def getScore(self):
         return self.player.getScore()
+
+    def getDNASequence(self):
+        return self.dna
+
+    def getDNAValue(self, index):
+        for i in self.dna:
+            if i == index:
+                return self.dna[index]
+
