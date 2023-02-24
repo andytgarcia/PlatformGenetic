@@ -48,19 +48,33 @@ def refillPopulation():
 
 
 def create_map_1():
-    map1.add(Platform(0, 690, 2400, 30, (0, 255, 0)))
-    map1.add(Platform(100, 600, 400, 30, (0, 255, 0)))
+    ## maze
+    map1.add(Platform(0, 690, 4000, 30, (0, 255, 0)))
+    #map1.add(Platform(100, 600, 400, 30, (0, 255, 0)))
     map1.add(Platform(200, 500, 400, 30, (0, 255, 0)))
     map1.add(Platform(100, 350, 200, 30, (0, 255, 0)))
     map1.add(Platform(270, 250, 200, 30, (0, 255, 0)))
-    map1.add(Platform(600, 200, 30, 400, (0, 255, 0)))
+    #map1.add(Platform(600, 200, 30, 400, (0, 255, 0)))
+    map1.add(Platform(730, 420, 300, 30, (0, 255, 0)))
+    map1.add(Platform(1280, 500, 200, 30, (0, 255, 0)))
     map1.add(Platform(715, 120, 300, 30, (0, 255, 0)))
     map1.add(Platform(740, 700, 300, 30, (0, 255, 0)))
-    map1.add(Platform(0, 0, 30, 720, (0, 255, 0)))
+    map1.add(Platform(0, 0, 40, 720, (0, 255, 0)))
+    map1.add(Platform(1080, 590, 300, 30, (0, 255, 0)))
+
+
+    ## coins
     map1.addCoin(Coin(600, 650))
     map1.addCoin(Coin(220, 450))
     map1.addCoin(Coin(730, 90))
+    map1.addCoin(Coin(1380, 450))
+    map1.addCoin(Coin(1120, 540))
     map1.set_gravity(-4)
+
+
+def resetCoins():
+    for c in map1.coins:
+        c.resetColor()
 
 
 def draw_mouse_coords():
@@ -156,7 +170,7 @@ while not simOver:
     # player update code
     updateCamera()
 
-    if len(aiPlayers) > 1 and aiPlayers[0].isDone():
+    if aiPlayers[0].isDone():
         killBottomHalf()
         for a in aiPlayers:
             sortAIByScore()
@@ -164,6 +178,7 @@ while not simOver:
         mateParents(aiPlayers)
         setMap()
         genCounter += 1
+        resetCoins()
 
     for a in aiPlayers:
         a.act()

@@ -200,6 +200,8 @@ class Map:
             c.draw(screen)
 
 
+
+
 class Coin:
     def __init__(self, x, y):
         self.x = x
@@ -212,3 +214,6 @@ class Coin:
 
     def getCollisionRect(self):
         return pygame.Rect(self.x, self.y, self.size, self.size)
+
+    def resetColor(self):
+        self.color = (255, 255, 0)

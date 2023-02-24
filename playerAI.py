@@ -10,7 +10,7 @@ class PlayerAI:
     def __init__(self):
         self.player = Player((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         self.dna = []
-        self.alleleCount = 100
+        self.alleleCount = 500
         self.createDNASequence()
         self.currentAllele = 0
         self.delay = 100_000_000
