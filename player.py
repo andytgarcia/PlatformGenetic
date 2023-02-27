@@ -16,6 +16,7 @@ class Player:
         self.maxJumpVel = 40
         self.speed = 10
         self.score = 0
+        self.coinsCollected = []
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
@@ -79,10 +80,13 @@ class Player:
         myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
         for c in coins:
             if myHitBox.colliderect(c.getCollisionRect()):
-                #coins.remove(c)
-                if c.color != self.color:
+                if self.coinsCollected.count(c) != 0:
+                    self.coinsCollected.append(c)
                     self.score += 1
-                    c.color = self.color
+                #coins.remove(c)
+                #if c.color != self.color:
+                 #   self.score += 1
+                  #  c.color = self.color
 
     def getScore(self):
         return self.score

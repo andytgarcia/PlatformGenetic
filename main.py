@@ -49,7 +49,7 @@ def refillPopulation():
 
 def create_map_1():
     ## maze
-    map1.add(Platform(0, 690, 4000, 30, (0, 255, 0)))
+    map1.add(Platform(0, 690, 3000, 30, (0, 255, 0)))
     #map1.add(Platform(100, 600, 400, 30, (0, 255, 0)))
     map1.add(Platform(200, 500, 400, 30, (0, 255, 0)))
     map1.add(Platform(100, 350, 200, 30, (0, 255, 0)))
@@ -61,12 +61,14 @@ def create_map_1():
     map1.add(Platform(740, 700, 300, 30, (0, 255, 0)))
     map1.add(Platform(0, 0, 40, 720, (0, 255, 0)))
     map1.add(Platform(1080, 590, 300, 30, (0, 255, 0)))
+    map1.add(Platform(545, 175, 100, 30, (0,255,0)))
 
 
     ## coins
     map1.addCoin(Coin(600, 650))
     map1.addCoin(Coin(220, 450))
     map1.addCoin(Coin(730, 90))
+    map1.addCoin(Coin(950, 90))
     map1.addCoin(Coin(1380, 450))
     map1.addCoin(Coin(1120, 540))
     map1.set_gravity(-4)
@@ -113,6 +115,24 @@ def sortAIByScore():
                 aiPlayers[j] = p2
                 aiPlayers[j] = temp
 
+
+#helper method to get each player score
+def sortScore(playerAI):
+    return playerAI.player.score
+
+
+def sortAllScore():
+    print(aiPlayers[0])
+    aiPlayers.sort(key=sortScore)
+    print(aiPlayers[0])
+
+
+def circleHighest():
+    pygame.draw.circle(screen, (255, 0, 0), (aiPlayers[0].player.x, aiPlayers[0].player.y), 20, 0)
+
+def drawCurremtHighest():
+    textSurface = myfont.render("Current Highest Score: " + str(aiPlayers[0]), True, WHITE)
+    world.blit(textSurface, (1000, 30))
 
 # no worky
 def killBottomHalf():
@@ -173,7 +193,8 @@ while not simOver:
     if aiPlayers[0].isDone():
         killBottomHalf()
         for a in aiPlayers:
-            sortAIByScore()
+            #sortAIByScore()
+            sortAllScore()
             a.reset()
         mateParents(aiPlayers)
         setMap()
@@ -182,6 +203,10 @@ while not simOver:
 
     for a in aiPlayers:
         a.act()
+
+    sortAllScore()
+    circleHighest()
+    drawCurremtHighest()
 
     x_offset = 0
     y_offset = 0
