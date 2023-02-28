@@ -118,19 +118,19 @@ def sortAIByScore():
 
 #helper method to get each player score
 def sortScore(playerAI):
-    return playerAI.player.score
+    return playerAI.getScore()
 
 
 def sortAllScore():
-    print(aiPlayers[0])
-    aiPlayers.sort(key=sortScore)
-    print(aiPlayers[0])
+    #aiPlayers.sort(key=sortScore)
+    sorted(aiPlayers, key=lambda playerAI: playerAI.player.score)
 
 
 def circleHighest():
-    pygame.draw.circle(screen, (255, 0, 0), (aiPlayers[0].player.x, aiPlayers[0].player.y), 20, 0)
+    global aiPlayers
+    pygame.draw.circle(screen, (255, 0, 0), (aiPlayers[0].player.x + (aiPlayers[0].player.width/2), aiPlayers[0].player.y + (aiPlayers[0].player.height/2)), 20, 3)
 
-def drawCurremtHighest():
+def drawCurrentHighest():
     textSurface = myfont.render("Current Highest Score: " + str(aiPlayers[0]), True, WHITE)
     world.blit(textSurface, (1000, 30))
 
@@ -182,13 +182,17 @@ while not simOver:
     # draw code
     clear_screen()
     map1.draw(world)
+    circleHighest()
+
 
     for a in aiPlayers:
         a.draw(world)
     draw_mouse_coords()
+    drawCurrentHighest()
 
     # player update code
     updateCamera()
+
 
     if aiPlayers[0].isDone():
         killBottomHalf()
@@ -203,10 +207,8 @@ while not simOver:
 
     for a in aiPlayers:
         a.act()
+        sortAllScore()
 
-    sortAllScore()
-    circleHighest()
-    drawCurremtHighest()
 
     x_offset = 0
     y_offset = 0

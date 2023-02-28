@@ -36,7 +36,6 @@ class Player:
             self.x -= self.speed
         self.isMovingRight = True
 
-
     def setX(self, x):
         self.x = x
 
@@ -66,10 +65,9 @@ class Player:
             self.isJumping = False
             self.currentJumpVel = self.maxJumpVel
         if self.is_map_right_collision():
-            self.x = oldx - self.speed*4
+            self.x = oldx - self.speed * 4
         if self.isMapLeftCollision():
-            self.x = oldx + self.speed*4
-
+            self.x = oldx + self.speed * 4
 
         self.checkCoinCollision()
 
@@ -80,13 +78,14 @@ class Player:
         myHitBox = pygame.Rect(self.x, self.y, self.width, self.height)
         for c in coins:
             if myHitBox.colliderect(c.getCollisionRect()):
-                if self.coinsCollected.count(c) != 0:
-                    self.coinsCollected.append(c)
-                    self.score += 1
-                #coins.remove(c)
-                #if c.color != self.color:
-                 #   self.score += 1
-                  #  c.color = self.color
+                self.score += 1
+                # if self.coinsCollected.count(c) != 0:
+                #    self.coinsCollected.append(c)
+
+                # coins.remove(c)
+                # if c.color != self.color:
+                #   self.score += 1
+                #  c.color = self.color
 
     def getScore(self):
         return self.score
@@ -129,7 +128,7 @@ class Player:
         mapHitBoxes = self.map.get_hit_box_list()
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
-                if myRightX >= box.x:    # I am hitting and to the RIGHT this platform
+                if myRightX >= box.x:  # I am hitting and to the RIGHT this platform
                     return True
 
         return False
@@ -149,6 +148,7 @@ class Player:
         for box in mapHitBoxes:
             if myHitBox.colliderect(box):
                 return True
+
 
 class Platform:
 
@@ -202,8 +202,6 @@ class Map:
             p.draw(screen)
         for c in self.coins:
             c.draw(screen)
-
-
 
 
 class Coin:
