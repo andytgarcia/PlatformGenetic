@@ -49,7 +49,7 @@ class PlayerAI:
     def reset(self):
         self.currentAllele = 0
         self.player.setX(400)
-        self.player.setY(400)
+        self.player.setY(150)
 
     def act(self):
         if self.nextAct < time.time_ns() and self.currentAllele < self.alleleCount:

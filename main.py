@@ -52,25 +52,30 @@ def create_map_1():
     map1.add(Platform(0, 690, 3000, 30, (0, 255, 0)))
     #map1.add(Platform(100, 600, 400, 30, (0, 255, 0)))
     map1.add(Platform(200, 500, 400, 30, (0, 255, 0)))
-    map1.add(Platform(100, 350, 200, 30, (0, 255, 0)))
+    map1.add(Platform(30, 350, 200, 30, (0, 255, 0)))
     map1.add(Platform(270, 250, 200, 30, (0, 255, 0)))
     #map1.add(Platform(600, 200, 30, 400, (0, 255, 0)))
     map1.add(Platform(730, 420, 300, 30, (0, 255, 0)))
-    map1.add(Platform(1280, 500, 200, 30, (0, 255, 0)))
+    map1.add(Platform(1380, 500, 200, 30, (0, 255, 0)))
     map1.add(Platform(715, 120, 300, 30, (0, 255, 0)))
     map1.add(Platform(740, 700, 300, 30, (0, 255, 0)))
     map1.add(Platform(0, 0, 40, 720, (0, 255, 0)))
     map1.add(Platform(1080, 590, 300, 30, (0, 255, 0)))
     map1.add(Platform(545, 175, 100, 30, (0,255,0)))
+    map1.add(Platform(1250, 0, 30, 500, (0, 255, 0)))
+    map1.add(Platform(1250, 620, 30, 70, (0, 255, 0)))
 
 
     ## coins
     map1.addCoin(Coin(600, 650))
     map1.addCoin(Coin(220, 450))
+    map1.addCoin(Coin(550, 450))
     map1.addCoin(Coin(730, 90))
+    map1.addCoin(Coin(840, 90))
     map1.addCoin(Coin(950, 90))
     map1.addCoin(Coin(1380, 450))
     map1.addCoin(Coin(1120, 540))
+    map1.addCoin(Coin(860, 375))
     map1.set_gravity(-4)
 
 
@@ -126,13 +131,19 @@ def sortAllScore():
     sorted(aiPlayers, key=lambda playerAI: playerAI.player.score)
 
 
+
 def circleHighest():
     global aiPlayers
     pygame.draw.circle(screen, (255, 0, 0), (aiPlayers[0].player.x + (aiPlayers[0].player.width/2), aiPlayers[0].player.y + (aiPlayers[0].player.height/2)), 20, 3)
 
 def drawCurrentHighest():
-    textSurface = myfont.render("Current Highest Score: " + str(aiPlayers[0]), True, WHITE)
-    world.blit(textSurface, (1000, 30))
+    global sortedPlayers
+    textSurface = myfont.render("Current Highest Score: " + str(sortedPlayers[0].getScore()), True, WHITE)
+    world.blit(textSurface, (400, 30))
+    pygame.draw.circle(screen, (255, 0, 0), (
+        sortedPlayers[0].player.x + (sortedPlayers[0].player.width / 2), sortedPlayers[0].player.y + (sortedPlayers[0].player.height / 2)),
+                       60, 3)
+
 
 # no worky
 def killBottomHalf():
@@ -167,6 +178,7 @@ genCounter = 1
 # initialize all data before gameplay
 create_map_1()
 createAIPlayers()
+sortedPlayers = aiPlayers.copy()
 for a in aiPlayers:
     a.setMap(map1)
 
@@ -182,7 +194,6 @@ while not simOver:
     # draw code
     clear_screen()
     map1.draw(world)
-    circleHighest()
 
 
     for a in aiPlayers:
@@ -195,10 +206,10 @@ while not simOver:
 
 
     if aiPlayers[0].isDone():
+        sortAllScore()
         killBottomHalf()
         for a in aiPlayers:
             #sortAIByScore()
-            sortAllScore()
             a.reset()
         mateParents(aiPlayers)
         setMap()
@@ -207,7 +218,6 @@ while not simOver:
 
     for a in aiPlayers:
         a.act()
-        sortAllScore()
 
 
     x_offset = 0
@@ -219,6 +229,7 @@ while not simOver:
     camera_offset = (x_offset, y_offset)
     # camera_pos = ((player_pos[0], player_pos[1] - 900))
 
+    sortedPlayers.sort(key=sortScore)
 
 
     # put all the graphics on the screen
