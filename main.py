@@ -67,7 +67,7 @@ def create_map_1():
 
 
     ## coins
-    map1.addCoin(Coin(600, 650))
+    #map1.addCoin(Coin(600, 650))
     map1.addCoin(Coin(220, 450))
     map1.addCoin(Coin(550, 450))
     map1.addCoin(Coin(730, 90))
