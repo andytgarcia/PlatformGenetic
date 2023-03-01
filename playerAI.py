@@ -24,18 +24,18 @@ class PlayerAI:
 
 
     def createDNASequence(self):
-        # 0 - junk DNA - 50%
-        # 1 - jump - 10%
-        # 2 - move left - 20 &
-        # 3 - move right - 20%
+        # 0 - junk DNA - 80%
+        # 1 - jump - 6%
+        # 2 - move left - 7 &
+        # 3 - move right - 7%
 
         for i in range(self.alleleCount):
             choice = random.randint(1, 100)
-            if choice <= 50:
+            if choice <= 80:
                 self.dna.append(0)
-            elif choice <= 60:
+            elif choice <= 86:
                 self.dna.append(1)
-            elif choice <= 80:
+            elif choice <= 93:
                 self.dna.append(2)
             elif choice <= 100:
                 self.dna.append(3)
@@ -50,6 +50,7 @@ class PlayerAI:
         self.currentAllele = 0
         self.player.setX(400)
         self.player.setY(150)
+        self.player.score = 0
 
     def act(self):
         if self.nextAct < time.time_ns() and self.currentAllele < self.alleleCount:

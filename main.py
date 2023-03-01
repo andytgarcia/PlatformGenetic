@@ -5,7 +5,6 @@ import pygame
 from player import *
 from playerAI import *
 
-
 WHITE = (255, 255, 255)
 # start the pygame engine
 pygame.init()
@@ -46,30 +45,27 @@ def refillPopulation():
         a.setMap(map1)
 
 
-
 def create_map_1():
     ## maze
     map1.add(Platform(0, 690, 3000, 30, (0, 255, 0)))
-    #map1.add(Platform(100, 600, 400, 30, (0, 255, 0)))
+    # map1.add(Platform(100, 600, 400, 30, (0, 255, 0)))
     map1.add(Platform(200, 500, 400, 30, (0, 255, 0)))
     map1.add(Platform(30, 350, 200, 30, (0, 255, 0)))
     map1.add(Platform(270, 250, 200, 30, (0, 255, 0)))
-    #map1.add(Platform(600, 200, 30, 400, (0, 255, 0)))
-    map1.add(Platform(730, 420, 300, 30, (0, 255, 0)))
+    # map1.add(Platform(600, 200, 30, 400, (0, 255, 0)))
+    map1.add(Platform(650, 420, 300, 30, (0, 255, 0)))
     map1.add(Platform(1380, 500, 200, 30, (0, 255, 0)))
     map1.add(Platform(715, 120, 300, 30, (0, 255, 0)))
     map1.add(Platform(740, 700, 300, 30, (0, 255, 0)))
     map1.add(Platform(0, 0, 40, 720, (0, 255, 0)))
     map1.add(Platform(1080, 590, 300, 30, (0, 255, 0)))
-    map1.add(Platform(545, 175, 100, 30, (0,255,0)))
+    map1.add(Platform(545, 175, 100, 30, (0, 255, 0)))
     map1.add(Platform(1250, 0, 30, 500, (0, 255, 0)))
     map1.add(Platform(1250, 620, 30, 70, (0, 255, 0)))
 
-
     ## coins
-    #map1.addCoin(Coin(600, 650))
-    map1.addCoin(Coin(220, 450))
-    map1.addCoin(Coin(550, 450))
+    # map1.addCoin(Coin(600, 650))
+    map1.addCoin(Coin(385, 450))
     map1.addCoin(Coin(730, 90))
     map1.addCoin(Coin(840, 90))
     map1.addCoin(Coin(950, 90))
@@ -96,8 +92,6 @@ def draw_mouse_coords():
     world.blit(textSurface, (50, 120))
 
 
-
-
 def clear_screen():
     pygame.draw.rect(world, (0, 0, 0), (0, 0, world.get_rect().width, world.get_rect().height))
 
@@ -121,27 +115,32 @@ def sortAIByScore():
                 aiPlayers[j] = temp
 
 
-#helper method to get each player score
+# helper method to get each player score
 def sortScore(playerAI):
     return playerAI.getScore()
 
 
 def sortAllScore():
-    #aiPlayers.sort(key=sortScore)
-    sorted(aiPlayers, key=lambda playerAI: playerAI.player.score)
-
+    aiPlayers.sort(key=sortScore, reverse=True)
+    #sorted(aiPlayers, key=lambda playerAI: playerAI.player.score)
+    for a in aiPlayers:
+        print(a.getScore())
 
 
 def circleHighest():
     global aiPlayers
-    pygame.draw.circle(screen, (255, 0, 0), (aiPlayers[0].player.x + (aiPlayers[0].player.width/2), aiPlayers[0].player.y + (aiPlayers[0].player.height/2)), 20, 3)
+    pygame.draw.circle(screen, (255, 0, 0), (
+    aiPlayers[0].player.x + (aiPlayers[0].player.width / 2), aiPlayers[0].player.y + (aiPlayers[0].player.height / 2)),
+                       20, 3)
+
 
 def drawCurrentHighest():
     global sortedPlayers
     textSurface = myfont.render("Current Highest Score: " + str(sortedPlayers[0].getScore()), True, WHITE)
     world.blit(textSurface, (400, 30))
     pygame.draw.circle(screen, (255, 0, 0), (
-        sortedPlayers[0].player.x + (sortedPlayers[0].player.width / 2), sortedPlayers[0].player.y + (sortedPlayers[0].player.height / 2)),
+        sortedPlayers[0].player.x + (sortedPlayers[0].player.width / 2),
+        sortedPlayers[0].player.y + (sortedPlayers[0].player.height / 2)),
                        60, 3)
 
 
@@ -167,6 +166,7 @@ def mateParents(remaining):
 
         aiPlayers.append(child)
         a += 1
+
 
 def setMap():
     for a in aiPlayers:
@@ -195,7 +195,6 @@ while not simOver:
     clear_screen()
     map1.draw(world)
 
-
     for a in aiPlayers:
         a.draw(world)
     draw_mouse_coords()
@@ -204,21 +203,20 @@ while not simOver:
     # player update code
     updateCamera()
 
-
     if aiPlayers[0].isDone():
         sortAllScore()
         killBottomHalf()
         for a in aiPlayers:
-            #sortAIByScore()
+            # sortAIByScore()
             a.reset()
         mateParents(aiPlayers)
         setMap()
         genCounter += 1
         resetCoins()
+        sortedPlayers = aiPlayers.copy()
 
     for a in aiPlayers:
         a.act()
-
 
     x_offset = 0
     y_offset = 0
@@ -229,8 +227,7 @@ while not simOver:
     camera_offset = (x_offset, y_offset)
     # camera_pos = ((player_pos[0], player_pos[1] - 900))
 
-    sortedPlayers.sort(key=sortScore)
-
+    sortedPlayers.sort(key=sortScore, reverse=True)
 
     # put all the graphics on the screen
     # should be the LAST LINE of game code
