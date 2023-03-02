@@ -71,7 +71,8 @@ def create_map_1():
     map1.addCoin(Coin(950, 90))
     map1.addCoin(Coin(1380, 450))
     map1.addCoin(Coin(1120, 540))
-    map1.addCoin(Coin(860, 375))
+    map1.addCoin(Coin(860, 390))
+    map1.addCoin(Coin(720, 390))
     map1.set_gravity(-4)
 
 
