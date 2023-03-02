@@ -51,7 +51,7 @@ def create_map_1():
     # map1.add(Platform(100, 600, 400, 30, (0, 255, 0)))
     map1.add(Platform(200, 500, 400, 30, (0, 255, 0)))
     map1.add(Platform(30, 350, 200, 30, (0, 255, 0)))
-    map1.add(Platform(270, 250, 200, 30, (0, 255, 0)))
+    map1.add(Platform(225, 250, 260, 30, (0, 255, 0)))
     # map1.add(Platform(600, 200, 30, 400, (0, 255, 0)))
     map1.add(Platform(650, 420, 300, 30, (0, 255, 0)))
     map1.add(Platform(1380, 500, 200, 30, (0, 255, 0)))
@@ -59,13 +59,14 @@ def create_map_1():
     map1.add(Platform(740, 700, 300, 30, (0, 255, 0)))
     map1.add(Platform(0, 0, 40, 720, (0, 255, 0)))
     map1.add(Platform(1080, 590, 300, 30, (0, 255, 0)))
-    map1.add(Platform(545, 175, 100, 30, (0, 255, 0)))
+    map1.add(Platform(525, 175, 130, 30, (0, 255, 0)))
     map1.add(Platform(1250, 0, 30, 500, (0, 255, 0)))
     map1.add(Platform(1250, 620, 30, 70, (0, 255, 0)))
+    map1.add(Platform(1090, 220, 200, 30, (0, 255, 0)))
 
     ## coins
     # map1.addCoin(Coin(600, 650))
-    map1.addCoin(Coin(385, 450))
+    map1.addCoin(Coin(385, 400))
     map1.addCoin(Coin(730, 90))
     map1.addCoin(Coin(840, 90))
     map1.addCoin(Coin(950, 90))
@@ -73,6 +74,8 @@ def create_map_1():
     map1.addCoin(Coin(1120, 540))
     map1.addCoin(Coin(860, 390))
     map1.addCoin(Coin(720, 390))
+    map1.addCoin(Coin(585, 145))
+    map1.addCoin(Coin(1170, 190))
     map1.set_gravity(-4)
 
 
