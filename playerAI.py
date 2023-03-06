@@ -5,6 +5,7 @@ import pygame
 
 from player import *
 
+BLUE = (0, 0, 255)
 
 class PlayerAI:
     def __init__(self):

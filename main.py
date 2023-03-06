@@ -6,6 +6,7 @@ from player import *
 from playerAI import *
 
 WHITE = (255, 255, 255)
+RED = (255, 0, 0)
 # start the pygame engine
 pygame.init()
 
@@ -131,21 +132,17 @@ def sortAllScore():
         print(a.getScore())
 
 
-def circleHighest():
-    global aiPlayers
-    pygame.draw.circle(screen, (255, 0, 0), (
-    aiPlayers[0].player.x + (aiPlayers[0].player.width / 2), aiPlayers[0].player.y + (aiPlayers[0].player.height / 2)),
-                       20, 3)
-
 
 def drawCurrentHighest():
     global sortedPlayers
     textSurface = myfont.render("Current Highest Score: " + str(sortedPlayers[0].getScore()), True, WHITE)
     world.blit(textSurface, (400, 30))
-    pygame.draw.circle(screen, (255, 0, 0), (
+
+    pygame.draw.circle(world, (255, 0, 0), (
         sortedPlayers[0].player.x + (sortedPlayers[0].player.width / 2),
         sortedPlayers[0].player.y + (sortedPlayers[0].player.height / 2)),
-                       60, 3)
+           30, 3)
+
 
 
 # no worky
