@@ -155,6 +155,8 @@ def killBottomHalf():
 
 
 def mateParents(remaining):
+
+    '''
     for a in range(len(remaining)):
         parent1 = remaining[a]
         parent2 = remaining[a + 1]
@@ -170,7 +172,22 @@ def mateParents(remaining):
 
         aiPlayers.append(child)
         a += 1
+'''
 
+    for a in range(len(remaining)):
+        parent1 = remaining[a]
+        parent2 = remaining[a + 1]
+        child = PlayerAI()
+        newDna = child.dna
+        p1DNA = parent1.getDNASequence()
+        randNum = random.randrange(0, parent1.alleleCount)
+        for i in range(randNum):
+            newDna.append(parent1.getDNAValue(i))
+        for i in range(randNum+1, parent1.alleleCount +1):
+            newDna.append(parent2.getDNAValue(i))
+
+        aiPlayers.append(child)
+        a +=1
 
 def setMap():
     for a in aiPlayers:
